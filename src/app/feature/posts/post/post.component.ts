@@ -15,7 +15,7 @@ export class PostComponent implements OnInit {
 
   ngOnInit(): void {
     Object.keys(this.post).forEach(property => this.currentView.set(property, false));
-    this.currentView.set(Object.keys(this.post)[0], true);
+    this.currentView.set(Object.keys(this.post)[2], true);
   }
 
   goToNextPostProperty(): void {
