@@ -1,0 +1,23 @@
+.post-container {
+    @apply border-2 border-solid border-neutral-950 rounded-lg;
+    @apply p-2;
+    @apply text-center;
+    @apply align-middle;
+    @apply shadow-lg;
+
+    transition: background-color 1.3s ease;
+    transition: transform 0.25s ease-in-out;
+}
+
+.post-container:hover {
+    @apply bg-orange-200;
+    transform: scale(1.1);
+}
+
+.padding-change {
+    transition: padding 0.5s ease;
+}
+
+.padding-change:hover {
+    @apply py-4;
+}

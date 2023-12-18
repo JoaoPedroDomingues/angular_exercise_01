@@ -1,0 +1,11 @@
+<div class="post-container" (click)="goToNextPostProperty()">
+    <h2>{{ currentPostPropertyName() }}</h2>
+    <hr>
+    <div class="padding-change">
+        <!-- Could also use a switch in this situation -->
+        <h3 *ngIf="currentView.get('id')">{{ post.id }}</h3>
+        <h3 *ngIf="currentView.get('userId')">{{ post.userId }}</h3>
+        <p *ngIf="currentView.get('title')">{{ post.title }}</p>
+        <p *ngIf="currentView.get('body')" (mouseover)="onMouseHover(true)" (mouseout)="onMouseHover(false)">{{ getAdjustedPostBody() }}</p>
+    </div>
+</div>

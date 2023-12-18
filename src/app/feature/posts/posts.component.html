@@ -1,0 +1,5 @@
+<div class="grid-container">
+    @for (post of posts; track $index) {
+        <app-post [post]="post" class="grid-item"></app-post>
+    }
+</div>

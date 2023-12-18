@@ -1,0 +1,14 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+.grid-container {
+    @apply grid;
+    @apply grid-cols-10;
+    @apply gap-1;
+}
+
+.grid-item {
+    @apply p-1;
+    @apply text-center;
+}
