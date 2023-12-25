@@ -41,9 +41,66 @@ If I were to expand this project, some things I would be focusing on would be:
  - **Standardize styling** - Currently each component has it's own styling being applied independently. Ideally, we want a more centralized stylization that can be inherited from. For example, if there isn't strict in-house design, we could resort to Component Libraries. Alternatively, for larger projects with multiple clients where the in-house design is a must, we can resort to a Shared Component Library, for instance; 
  - **Extrapolate string literals from somewhere else** - For the sake of supporting both localization and remove the responsibility from the development team for managing text content, removing hard-coded text from components and making use of a service like, for instance, Lokalise or Sanity;
  - **Introduction of caching requests** - I usually focus on how the product works to make my decisions on what to cache and how;
+ - **Expansion of the state management services** - For more complex applications, state management can become quite complex and it would be a good idea to separate this logic which, currently, is tightly coupled with the `userPosts.service.ts` - the decision to have them in the same class for now is that in the context of this assignment, the http request and the state update are, indeed, fully coupled;
  - **Be more diligent with providing all services from the root** - While the current implementation lazy-loads services, which is good, not all services should be accessible everywhere in the application;
  - **Supporting multiple viewport sizes**;
  - **General accessibility practices**.
+
+### A note on the usage of NgRX as state manager
+
+While I didn't use **NgRX** in this assignment, I decided to leave here what would the store associated with my `UserPosts` look like, in it's own `userPosts.state.ts`:
+
+```typescript
+import { createAction, createReducer, on, props } from "@ngrx/store";
+import { UserPost } from "../models";
+
+export interface UserPostsState {
+    userPosts: UserPost[]
+}
+
+export const initialUserPostsState: UserPostsState = {
+    userPosts: []
+};
+
+// Actions
+
+export const setUserPosts = createAction('[UserPosts] Set User Posts', props<UserPostsState>());
+// we can set multiple actions to be called for different use cases
+
+// Reducers
+
+export const userPostsReducer = createReducer(
+    initialUserPostsState,
+    on(setUserPosts, (state, { userPosts }) => ({ ...state, userPosts }))
+    // we can then define multiple on's that deal with data differently for different use cases
+);
+
+// Selectors
+
+export const selectUserPosts = (state: UserPostsState) => state.userPosts;
+// we can export multiple selectors, which removes the responsibility to filter/treat data from who is using this data
+```
+
+How I would update the state:
+
+```typescript
+@Injectable({ providedIn: 'root' })
+export class UserPostsService {
+    constructor(private httpPostsService: HttpPostsService, private store: Store) { }
+
+    getPosts(): Observable<UserPost[]> {
+        return this.httpPostsService.get().pipe(
+            tap((userPosts) => {
+                this.store.dispatch(setUserPosts({ userPosts })); // Using the action setUserPosts to send the received response
+            })
+        );
+    }
+}
+```
+
+While I don't have a lot of experience using **NgRX**, I have used its React equivalent (Redux).
+
+The snippets above served as my own exercise to draw conclusions on how Redux's concepts are similar to NgRX's, using NgRX's official documentation as my reference.
 
 ### Some problems faced
 

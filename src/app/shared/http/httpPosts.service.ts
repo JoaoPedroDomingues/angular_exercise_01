@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { UserPost } from "../models";
-import { HttpClientService } from "./http_client.service";
+import { HttpClientService } from "./httpClient.service";
 
 @Injectable({ providedIn: 'root' })
 export class HttpPostsService {

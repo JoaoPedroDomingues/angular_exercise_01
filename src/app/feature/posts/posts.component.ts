@@ -1,20 +1,20 @@
 import { Component, OnInit } from "@angular/core";
-import { HttpPostsService } from "@src/app/shared/http/http_posts.service";
 import { UserPost } from "@src/app/shared/models";
+import { UserPostsService } from "@src/app/shared/services/userPosts.service";
 
 @Component({
     selector: 'app-posts',
     templateUrl: './posts.component.html',
-    styleUrls: ['./posts.component.css'] 
+    styleUrls: ['./posts.component.css']
 })
 export class PostsComponent implements OnInit {
-    posts: UserPost[] = [];
+    posts: UserPost[];
 
-    constructor(private httpPostsService: HttpPostsService) { }
+    constructor(private userPostsService: UserPostsService) { }
 
+    // I could later assign these subscriptions to be unsubscribed from in the OnDestroy(), for example
     ngOnInit(): void {
-        this.httpPostsService.get().subscribe(posts => {
-            this.posts = posts;
-        });
+        this.userPostsService.getPosts().subscribe();
+        this.userPostsService.userPosts$.subscribe(posts => this.posts = posts);
     }
 }
